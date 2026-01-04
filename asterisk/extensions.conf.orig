@@ -1,0 +1,131 @@
+[general]
+static=yes
+writeprotect=no
+clearglobalvars=no
+
+[globals]
+; Global variables set by .NET API
+
+;===============================================
+; OUTBOUND CALLS (Progressive Dialer)
+;===============================================
+[outbound-campaign]
+exten => _X.,1,NoOp(=== OUTBOUND CALL START ===)
+ same => n,NoOp(Destination: ${EXTEN})
+ same => n,NoOp(Campaign: ${CAMPAIGN_ID})
+ same => n,NoOp(Lead ID: ${LEAD_ID})
+ same => n,Set(CALLERID(num)=${CAMPAIGN_CALLERID})
+ same => n,Set(CALLERID(name)=${CAMPAIGN_NAME})
+ same => n,Set(CHANNEL(language)=en)
+
+ ; Start recording if enabled
+ same => n,GotoIf($["${RECORD_CALL}" = "1"]?record:dial)
+ same => n(record),MixMonitor(${UNIQUEID}.wav,b)
+
+ ; Dial out through provider
+ same => n(dial),Dial(PJSIP/${EXTEN}@${PROVIDER_NAME},${DIAL_TIMEOUT},rtTg)
+ same => n,NoOp(Dial Status: ${DIALSTATUS})
+
+ ; Handle call results
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?answered:notanswered)
+
+ same => n(answered),NoOp(Call Answered - Connecting to Agent)
+ same => n,Goto(connect-agent,s,1)
+
+ same => n(notanswered),NoOp(Call Not Answered: ${DIALSTATUS})
+ same => n,Set(CALL_STATUS=${DIALSTATUS})
+ same => n,UserEvent(CallNotAnswered,Status:${DIALSTATUS},LeadID:${LEAD_ID},UniqueID:${UNIQUEID})
+ same => n,Hangup()
+
+;===============================================
+; CONNECT TO AGENT
+;===============================================
+[connect-agent]
+exten => s,1,NoOp(=== CONNECTING TO AGENT ===)
+ same => n,NoOp(Agent Extension: ${AGENT_EXTENSION})
+ same => n,Set(CHANNEL(language)=en)
+
+ ; Bridge to agent
+ same => n,Dial(PJSIP/${AGENT_EXTENSION},30,rtTkKg)
+ same => n,NoOp(Bridge Status: ${DIALSTATUS})
+
+ same => n,GotoIf($["${DIALSTATUS}" = "ANSWER"]?connected:failed)
+
+ same => n(connected),NoOp(Agent Connected)
+ same => n,UserEvent(AgentConnected,Agent:${AGENT_EXTENSION},LeadID:${LEAD_ID},UniqueID:${UNIQUEID})
+ same => n,Hangup()
+
+ same => n(failed),NoOp(Agent Connection Failed)
+ same => n,UserEvent(AgentConnectionFailed,Agent:${AGENT_EXTENSION},LeadID:${LEAD_ID})
+ same => n,Hangup()
+
+;===============================================
+; INBOUND CALLS (From Customers)
+;===============================================
+[from-trunk]
+exten => _X.,1,NoOp(=== INBOUND CALL ===)
+ same => n,NoOp(From: ${CALLERID(num)})
+ same => n,Answer()
+ same => n,Set(CHANNEL(language)=en)
+
+ ; Start recording
+ same => n,MixMonitor(inbound_${UNIQUEID}.wav,b)
+
+ ; Send to campaign queue
+ same => n,Queue(${DID_CAMPAIGN_QUEUE},tT,,,300)
+ same => n,NoOp(Queue Result: ${QUEUESTATUS})
+
+ ; If queue times out or fails
+ same => n,Playback(vm-nobodyavail)
+ same => n,Hangup()
+
+;===============================================
+; AGENT CONTEXT (Agent-to-Agent Calls)
+;===============================================
+[agents]
+exten => _8XXX,1,NoOp(Agent-to-Agent Call)
+ same => n,Dial(PJSIP/${EXTEN},30,rtT)
+ same => n,Hangup()
+
+;===============================================
+; MANUAL DIAL (Agent Manually Dials)
+;===============================================
+[agent-manual-dial]
+exten => _X.,1,NoOp(=== MANUAL DIAL ===)
+ same => n,NoOp(Agent: ${CALLERID(num)})
+ same => n,NoOp(Destination: ${EXTEN})
+ same => n,Set(CALLERID(num)=${CAMPAIGN_CALLERID})
+ same => n,MixMonitor(manual_${UNIQUEID}.wav,b)
+ same => n,Dial(PJSIP/${EXTEN}@${PROVIDER_NAME},60,rtTg)
+ same => n,Hangup()
+
+;===============================================
+; CALL TRANSFER
+;===============================================
+[transfer]
+exten => _X.,1,NoOp(Transfer to ${EXTEN})
+ same => n,Dial(PJSIP/${EXTEN},30,rtT)
+ same => n,Hangup()
+
+;===============================================
+; AGENT ORIGINATED CALL (via Call File)
+; DYNAMIC PROVIDER ROUTING - NO HARDCODING!
+;
+; Call file sets:
+;   SetVar: PROVIDER=Telynx
+;   SetVar: PROVIDER_ENDPOINT=Telynx-endpoint
+;
+; This context works with ANY provider automatically
+;===============================================
+[agent-originated]
+exten => s,1,NoOp(=== AGENT ORIGINATED CALL ===)
+ same => n,NoOp(Customer Phone: ${CUSTOMER_PHONE})
+ same => n,NoOp(Provider: ${PROVIDER})
+ same => n,NoOp(Provider Endpoint: ${PROVIDER_ENDPOINT})
+ same => n,Set(CALLERID(num)=8001)
+ same => n,Set(CALLERID(name)=CallCenter)
+ same => n,Set(CHANNEL(language)=en)
+ same => n,Answer()
+ same => n,NoOp(Dialing ${CUSTOMER_PHONE} via ${PROVIDER_ENDPOINT})
+ same => n,Dial(PJSIP/${CUSTOMER_PHONE}@${PROVIDER_ENDPOINT},60,rtTg)
+ same => n,Hangup()

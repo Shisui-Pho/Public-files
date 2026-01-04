@@ -1,0 +1,142 @@
+Dec 15 20:15:14 server dotnet[3901]:       FROM "Campaigns" AS c
+Dec 15 20:15:14 server dotnet[3901]:       LEFT JOIN "SipProviders" AS s ON c."SipProviderId" = s."Id"
+Dec 15 20:15:14 server dotnet[3901]:       LEFT JOIN (
+Dec 15 20:15:14 server dotnet[3901]:           SELECT a."Id", a."AgentId", a."AssignedAt", a."CampaignId", a."IsActive", a0."Id" AS "Id0", a0."CallsToday", a0."CurrentStatus", a0."DailyCallLimit", a0."Extension", a0."IsFirstLogin", a0."IsOnline", a0."LoginTime", a0."LogoutTime", a0."SipPassword", a0."SipUsername", a0."StatusChangedAt", a0."TotalTalkTimeSeconds", a0."UserId"
+Dec 15 20:15:14 server dotnet[3901]:           FROM "AgentCampaignAssignments" AS a
+Dec 15 20:15:14 server dotnet[3901]:           INNER JOIN "Agents" AS a0 ON a."AgentId" = a0."Id"
+Dec 15 20:15:14 server dotnet[3901]:       ) AS t ON c."Id" = t."CampaignId"
+Dec 15 20:15:14 server dotnet[3901]:       LEFT JOIN "LeadLists" AS l ON c."Id" = l."CampaignId"
+Dec 15 20:15:14 server dotnet[3901]:       WHERE c."Status" = 'ACTIVE'
+Dec 15 20:15:14 server dotnet[3901]:       ORDER BY c."Id", s."Id", t."Id", t."Id0"
+Dec 15 20:15:34 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:34 server dotnet[3901]:       Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:34 server dotnet[3901]:       SELECT c."Id", c."ActiveEndTime", c."ActiveStartTime", c."AgentScript", c."AnsweredCalls", c."BatchGapSeconds", c."CallerIdName", c."CallerIdNumber", c."CallsPerBatch", c."CallsToday", c."CreatedAt", c."CreatedBy", c."Description", c."DialRatio", c."DialTimeout", c."DialedLeads", c."MaxRetryAttempts", c."Name", c."PausedAt", c."RecordCalls", c."RetryDelayMinutes", c."SipProviderId", c."StartedAt", c."Status", c."TotalLeads", s."Id", t."Id", t."AgentId", t."AssignedAt", t."CampaignId", t."IsActive", t."Id0", t."CallsToday", t."CurrentStatus", t."DailyCallLimit", t."Extension", t."IsFirstLogin", t."IsOnline", t."LoginTime", t."LogoutTime", t."SipPassword", t."SipUsername", t."StatusChangedAt", t."TotalTalkTimeSeconds", t."UserId", s."CodecAllow", s."Context", s."CreatedAt", s."CreatedBy", s."DtmfMode", s."Host", s."IsActive", s."IsRegistered", s."LastRegistrationCheck", s."Name", s."Password", s."Port", s."Transport", s."Username", l."Id", l."CampaignId", l."Description", l."DialedLeads", l."IsActive", l."Name", l."TotalLeads", l."UploadedAt", l."UploadedBy"
+Dec 15 20:15:34 server dotnet[3901]:       FROM "Campaigns" AS c
+Dec 15 20:15:34 server dotnet[3901]:       LEFT JOIN "SipProviders" AS s ON c."SipProviderId" = s."Id"
+Dec 15 20:15:34 server dotnet[3901]:       LEFT JOIN (
+Dec 15 20:15:34 server dotnet[3901]:           SELECT a."Id", a."AgentId", a."AssignedAt", a."CampaignId", a."IsActive", a0."Id" AS "Id0", a0."CallsToday", a0."CurrentStatus", a0."DailyCallLimit", a0."Extension", a0."IsFirstLogin", a0."IsOnline", a0."LoginTime", a0."LogoutTime", a0."SipPassword", a0."SipUsername", a0."StatusChangedAt", a0."TotalTalkTimeSeconds", a0."UserId"
+Dec 15 20:15:34 server dotnet[3901]:           FROM "AgentCampaignAssignments" AS a
+Dec 15 20:15:34 server dotnet[3901]:           INNER JOIN "Agents" AS a0 ON a."AgentId" = a0."Id"
+Dec 15 20:15:34 server dotnet[3901]:       ) AS t ON c."Id" = t."CampaignId"
+Dec 15 20:15:34 server dotnet[3901]:       LEFT JOIN "LeadLists" AS l ON c."Id" = l."CampaignId"
+Dec 15 20:15:34 server dotnet[3901]:       WHERE c."Status" = 'ACTIVE'
+Dec 15 20:15:34 server dotnet[3901]:       ORDER BY c."Id", s."Id", t."Id", t."Id0"
+Dec 15 20:15:47 server dotnet[3901]: warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+Dec 15 20:15:47 server dotnet[3901]:       Failed to determine the https port for redirect.
+Dec 15 20:15:48 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:48 server dotnet[3901]:       Executed DbCommand (15ms) [Parameters=[@__request_Username_0='?'], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:48 server dotnet[3901]:       SELECT u."Id", u."CreatedAt", u."Email", u."FullName", u."IsActive", u."LastLoginAt", u."PasswordHash", u."Role", u."Username", a."Id", a."CallsToday", a."CurrentStatus", a."DailyCallLimit", a."Extension", a."IsFirstLogin", a."IsOnline", a."LoginTime", a."LogoutTime", a."SipPassword", a."SipUsername", a."StatusChangedAt", a."TotalTalkTimeSeconds", a."UserId"
+Dec 15 20:15:48 server dotnet[3901]:       FROM "Users" AS u
+Dec 15 20:15:48 server dotnet[3901]:       LEFT JOIN "Agents" AS a ON u."Id" = a."UserId"
+Dec 15 20:15:48 server dotnet[3901]:       WHERE u."Username" = @__request_Username_0
+Dec 15 20:15:48 server dotnet[3901]:       LIMIT 1
+Dec 15 20:15:48 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:48 server dotnet[3901]:       Executed DbCommand (40ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:48 server dotnet[3901]:       UPDATE "Users" SET "LastLoginAt" = @p0
+Dec 15 20:15:48 server dotnet[3901]:       WHERE "Id" = @p1;
+Dec 15 20:15:48 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:48 server dotnet[3901]:       Executed DbCommand (4ms) [Parameters=[@p13='?' (DbType = Int32), @p0='?' (DbType = Int32), @p1='?', @p2='?' (DbType = Int32), @p3='?', @p4='?' (DbType = Boolean), @p5='?' (DbType = Boolean), @p6='?' (DbType = DateTime), @p7='?' (DbType = DateTime), @p8='?', @p9='?', @p10='?' (DbType = DateTime), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:48 server dotnet[3901]:       UPDATE "Agents" SET "CallsToday" = @p0, "CurrentStatus" = @p1, "DailyCallLimit" = @p2, "Extension" = @p3, "IsFirstLogin" = @p4, "IsOnline" = @p5, "LoginTime" = @p6, "LogoutTime" = @p7, "SipPassword" = @p8, "SipUsername" = @p9, "StatusChangedAt" = @p10, "TotalTalkTimeSeconds" = @p11, "UserId" = @p12
+Dec 15 20:15:48 server dotnet[3901]:       WHERE "Id" = @p13;
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.Infrastructure.Services.AgentHub[0]
+Dec 15 20:15:49 server dotnet[3901]:       Agent connected: 26S6hPpubSZsd_yMqzi9tA, ConnectionId: 26S6hPpubSZsd_yMqzi9tA
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.Infrastructure.Services.AgentHub[0]
+Dec 15 20:15:49 server dotnet[3901]:       Agent 2 registered with ConnectionId: 26S6hPpubSZsd_yMqzi9tA
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.API.Controllers.AgentsController[0]
+Dec 15 20:15:49 server dotnet[3901]:       Agent id : 2
+Dec 15 20:15:49 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:49 server dotnet[3901]:       Executed DbCommand (3ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:49 server dotnet[3901]:       SELECT u."Id", u."CreatedAt", u."Email", u."FullName", u."IsActive", u."LastLoginAt", u."PasswordHash", u."Role", u."Username", a."Id", a."CallsToday", a."CurrentStatus", a."DailyCallLimit", a."Extension", a."IsFirstLogin", a."IsOnline", a."LoginTime", a."LogoutTime", a."SipPassword", a."SipUsername", a."StatusChangedAt", a."TotalTalkTimeSeconds", a."UserId"
+Dec 15 20:15:49 server dotnet[3901]:       FROM "Users" AS u
+Dec 15 20:15:49 server dotnet[3901]:       LEFT JOIN "Agents" AS a ON u."Id" = a."UserId"
+Dec 15 20:15:49 server dotnet[3901]:       WHERE u."Id" = @__id_0
+Dec 15 20:15:49 server dotnet[3901]:       LIMIT 1
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.API.Controllers.AgentsController[0]
+Dec 15 20:15:49 server dotnet[3901]:       Set status executed.
+Dec 15 20:15:49 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:49 server dotnet[3901]:       Executed DbCommand (13ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?', @p1='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:49 server dotnet[3901]:       UPDATE "Agents" SET "CurrentStatus" = @p0, "StatusChangedAt" = @p1
+Dec 15 20:15:49 server dotnet[3901]:       WHERE "Id" = @p2;
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.API.Controllers.AgentsController[0]
+Dec 15 20:15:49 server dotnet[3901]:       Agent id : 2
+Dec 15 20:15:49 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:49 server dotnet[3901]:       Executed DbCommand (2ms) [Parameters=[@__id_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:49 server dotnet[3901]:       SELECT u."Id", u."CreatedAt", u."Email", u."FullName", u."IsActive", u."LastLoginAt", u."PasswordHash", u."Role", u."Username", a."Id", a."CallsToday", a."CurrentStatus", a."DailyCallLimit", a."Extension", a."IsFirstLogin", a."IsOnline", a."LoginTime", a."LogoutTime", a."SipPassword", a."SipUsername", a."StatusChangedAt", a."TotalTalkTimeSeconds", a."UserId"
+Dec 15 20:15:49 server dotnet[3901]:       FROM "Users" AS u
+Dec 15 20:15:49 server dotnet[3901]:       LEFT JOIN "Agents" AS a ON u."Id" = a."UserId"
+Dec 15 20:15:49 server dotnet[3901]:       WHERE u."Id" = @__id_0
+Dec 15 20:15:49 server dotnet[3901]:       LIMIT 1
+Dec 15 20:15:49 server dotnet[3901]: info: CallCenter.API.Controllers.AgentsController[0]
+Dec 15 20:15:49 server dotnet[3901]:       Set status executed.
+Dec 15 20:15:49 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:49 server dotnet[3901]:       Executed DbCommand (3ms) [Parameters=[@p2='?' (DbType = Int32), @p0='?', @p1='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:49 server dotnet[3901]:       UPDATE "Agents" SET "CurrentStatus" = @p0, "StatusChangedAt" = @p1
+Dec 15 20:15:49 server dotnet[3901]:       WHERE "Id" = @p2;
+Dec 15 20:15:49 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:49 server dotnet[3901]:       Executed DbCommand (4ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:49 server dotnet[3901]:       SELECT l."Id", l."CampaignId", l."Description", l."DialedLeads", l."IsActive", l."Name", l."TotalLeads", l."UploadedAt", l."UploadedBy", c."Id", c."ActiveEndTime", c."ActiveStartTime", c."AgentScript", c."AnsweredCalls", c."BatchGapSeconds", c."CallerIdName", c."CallerIdNumber", c."CallsPerBatch", c."CallsToday", c."CreatedAt", c."CreatedBy", c."Description", c."DialRatio", c."DialTimeout", c."DialedLeads", c."MaxRetryAttempts", c."Name", c."PausedAt", c."RecordCalls", c."RetryDelayMinutes", c."SipProviderId", c."StartedAt", c."Status", c."TotalLeads", l0."Id", l0."Address", l0."CallAttempts", l0."CampaignId", l0."City", l0."CreatedAt", l0."CustomField1", l0."CustomField2", l0."CustomField3", l0."CustomField4", l0."CustomField5", l0."Disposition", l0."Email", l0."FirstName", l0."IsActive", l0."IsOnDNC", l0."LastCalledAt", l0."LastName", l0."LeadListId", l0."NextCallScheduled", l0."Notes", l0."PhoneNumber", l0."Priority", l0."State", l0."Status", l0."ZipCode"
+Dec 15 20:15:49 server dotnet[3901]:       FROM "LeadLists" AS l
+Dec 15 20:15:49 server dotnet[3901]:       INNER JOIN "Campaigns" AS c ON l."CampaignId" = c."Id"
+Dec 15 20:15:49 server dotnet[3901]:       LEFT JOIN "Leads" AS l0 ON l."Id" = l0."LeadListId"
+Dec 15 20:15:49 server dotnet[3901]:       ORDER BY l."Id", c."Id"
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Originating a call now....
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Agent id and lead id: 2
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Agent id and lead id: 3
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Agent claim id: 2
+Dec 15 20:15:52 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:52 server dotnet[3901]:       Executed DbCommand (2ms) [Parameters=[@__agentId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:52 server dotnet[3901]:       SELECT a."Id", a."CallsToday", a."CurrentStatus", a."DailyCallLimit", a."Extension", a."IsFirstLogin", a."IsOnline", a."LoginTime", a."LogoutTime", a."SipPassword", a."SipUsername", a."StatusChangedAt", a."TotalTalkTimeSeconds", a."UserId", u."Id", u."CreatedAt", u."Email", u."FullName", u."IsActive", u."LastLoginAt", u."PasswordHash", u."Role", u."Username"
+Dec 15 20:15:52 server dotnet[3901]:       FROM "Agents" AS a
+Dec 15 20:15:52 server dotnet[3901]:       INNER JOIN "Users" AS u ON a."UserId" = u."Id"
+Dec 15 20:15:52 server dotnet[3901]:       WHERE u."Id" = @__agentId_0
+Dec 15 20:15:52 server dotnet[3901]:       LIMIT 1
+Dec 15 20:15:52 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:52 server dotnet[3901]:       Executed DbCommand (2ms) [Parameters=[@__request_LeadId_0='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:52 server dotnet[3901]:       SELECT l."Id", l."Address", l."CallAttempts", l."CampaignId", l."City", l."CreatedAt", l."CustomField1", l."CustomField2", l."CustomField3", l."CustomField4", l."CustomField5", l."Disposition", l."Email", l."FirstName", l."IsActive", l."IsOnDNC", l."LastCalledAt", l."LastName", l."LeadListId", l."NextCallScheduled", l."Notes", l."PhoneNumber", l."Priority", l."State", l."Status", l."ZipCode", c."Id", c."ActiveEndTime", c."ActiveStartTime", c."AgentScript", c."AnsweredCalls", c."BatchGapSeconds", c."CallerIdName", c."CallerIdNumber", c."CallsPerBatch", c."CallsToday", c."CreatedAt", c."CreatedBy", c."Description", c."DialRatio", c."DialTimeout", c."DialedLeads", c."MaxRetryAttempts", c."Name", c."PausedAt", c."RecordCalls", c."RetryDelayMinutes", c."SipProviderId", c."StartedAt", c."Status", c."TotalLeads", s."Id", s."CodecAllow", s."Context", s."CreatedAt", s."CreatedBy", s."DtmfMode", s."Host", s."IsActive", s."IsRegistered", s."LastRegistrationCheck", s."Name", s."Password", s."Port", s."Transport", s."Username"
+Dec 15 20:15:52 server dotnet[3901]:       FROM "Leads" AS l
+Dec 15 20:15:52 server dotnet[3901]:       INNER JOIN "Campaigns" AS c ON l."CampaignId" = c."Id"
+Dec 15 20:15:52 server dotnet[3901]:       LEFT JOIN "SipProviders" AS s ON c."SipProviderId" = s."Id"
+Dec 15 20:15:52 server dotnet[3901]:       WHERE l."Id" = @__request_LeadId_0
+Dec 15 20:15:52 server dotnet[3901]:       LIMIT 1
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Lead id: 3
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       vefiying information
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Call origination requested: Lead 3 (27791801761) by Agent 1 (8001)
+Dec 15 20:15:52 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:52 server dotnet[3901]:       Executed DbCommand (41ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = DateTime), @p2='?' (DbType = Decimal), @p3='?' (DbType = DateTime), @p4='?' (DbType = DateTime), @p5='?', @p6='?', @p7='?' (DbType = Int32), @p8='?', @p9='?' (DbType = Boolean), @p10='?' (DbType = Int32), @p11='?', @p12='?', @p13='?' (DbType = Int64), @p14='?', @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?' (DbType = Int32), @p18='?', @p19='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:52 server dotnet[3901]:       INSERT INTO "CallLogs" ("AgentId", "CallAnswerTime", "CallCostAmount", "CallEndTime", "CallStartTime", "CallStatus", "CallType", "CampaignId", "Disposition", "IsAnsweringMachine", "LeadId", "Notes", "PhoneNumber", "RecordingFileSizeBytes", "RecordingPath", "RingDurationSeconds", "TalkDurationSeconds", "TotalDurationSeconds", "UniqueId", "WrapUpDurationSeconds")
+Dec 15 20:15:52 server dotnet[3901]:       VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19)
+Dec 15 20:15:52 server dotnet[3901]:       RETURNING "Id";
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       CallLog created: 63 with UniqueId: 027b8c49-6d5d-41c9-bf51-da7625ee83a3
+Dec 15 20:15:52 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:52 server dotnet[3901]:       Executed DbCommand (4ms) [Parameters=[@p25='?' (DbType = Int32), @p0='?', @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?', @p4='?' (DbType = DateTime), @p5='?', @p6='?', @p7='?', @p8='?', @p9='?', @p10='?', @p11='?', @p12='?', @p13='?' (DbType = Boolean), @p14='?' (DbType = Boolean), @p15='?' (DbType = DateTime), @p16='?', @p17='?' (DbType = Int32), @p18='?' (DbType = DateTime), @p19='?', @p20='?', @p21='?' (DbType = Int32), @p22='?', @p23='?', @p24='?'], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:52 server dotnet[3901]:       UPDATE "Leads" SET "Address" = @p0, "CallAttempts" = @p1, "CampaignId" = @p2, "City" = @p3, "CreatedAt" = @p4, "CustomField1" = @p5, "CustomField2" = @p6, "CustomField3" = @p7, "CustomField4" = @p8, "CustomField5" = @p9, "Disposition" = @p10, "Email" = @p11, "FirstName" = @p12, "IsActive" = @p13, "IsOnDNC" = @p14, "LastCalledAt" = @p15, "LastName" = @p16, "LeadListId" = @p17, "NextCallScheduled" = @p18, "Notes" = @p19, "PhoneNumber" = @p20, "Priority" = @p21, "State" = @p22, "Status" = @p23, "ZipCode" = @p24
+Dec 15 20:15:52 server dotnet[3901]:       WHERE "Id" = @p25;
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Using provider: Telynx
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Creating call file: /var/spool/asterisk/outgoing/agent_63_16d0a477.call
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Call file created successfully: agent_63_16d0a477.call
+Dec 15 20:15:52 server dotnet[3901]: info: CallCenter.API.Controllers.CallsController[0]
+Dec 15 20:15:52 server dotnet[3901]:       Call file created: Lead 3 → Agent 8001
+Dec 15 20:15:54 server dotnet[3901]: info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+Dec 15 20:15:54 server dotnet[3901]:       Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+Dec 15 20:15:54 server dotnet[3901]:       SELECT c."Id", c."ActiveEndTime", c."ActiveStartTime", c."AgentScript", c."AnsweredCalls", c."BatchGapSeconds", c."CallerIdName", c."CallerIdNumber", c."CallsPerBatch", c."CallsToday", c."CreatedAt", c."CreatedBy", c."Description", c."DialRatio", c."DialTimeout", c."DialedLeads", c."MaxRetryAttempts", c."Name", c."PausedAt", c."RecordCalls", c."RetryDelayMinutes", c."SipProviderId", c."StartedAt", c."Status", c."TotalLeads", s."Id", t."Id", t."AgentId", t."AssignedAt", t."CampaignId", t."IsActive", t."Id0", t."CallsToday", t."CurrentStatus", t."DailyCallLimit", t."Extension", t."IsFirstLogin", t."IsOnline", t."LoginTime", t."LogoutTime", t."SipPassword", t."SipUsername", t."StatusChangedAt", t."TotalTalkTimeSeconds", t."UserId", s."CodecAllow", s."Context", s."CreatedAt", s."CreatedBy", s."DtmfMode", s."Host", s."IsActive", s."IsRegistered", s."LastRegistrationCheck", s."Name", s."Password", s."Port", s."Transport", s."Username", l."Id", l."CampaignId", l."Description", l."DialedLeads", l."IsActive", l."Name", l."TotalLeads", l."UploadedAt", l."UploadedBy"
+Dec 15 20:15:54 server dotnet[3901]:       FROM "Campaigns" AS c
+Dec 15 20:15:54 server dotnet[3901]:       LEFT JOIN "SipProviders" AS s ON c."SipProviderId" = s."Id"
+Dec 15 20:15:54 server dotnet[3901]:       LEFT JOIN (
+Dec 15 20:15:54 server dotnet[3901]:           SELECT a."Id", a."AgentId", a."AssignedAt", a."CampaignId", a."IsActive", a0."Id" AS "Id0", a0."CallsToday", a0."CurrentStatus", a0."DailyCallLimit", a0."Extension", a0."IsFirstLogin", a0."IsOnline", a0."LoginTime", a0."LogoutTime", a0."SipPassword", a0."SipUsername", a0."StatusChangedAt", a0."TotalTalkTimeSeconds", a0."UserId"
+Dec 15 20:15:54 server dotnet[3901]:           FROM "AgentCampaignAssignments" AS a
+Dec 15 20:15:54 server dotnet[3901]:           INNER JOIN "Agents" AS a0 ON a."AgentId" = a0."Id"
+Dec 15 20:15:54 server dotnet[3901]:       ) AS t ON c."Id" = t."CampaignId"
+Dec 15 20:15:54 server dotnet[3901]:       LEFT JOIN "LeadLists" AS l ON c."Id" = l."CampaignId"
+Dec 15 20:15:54 server dotnet[3901]:       WHERE c."Status" = 'ACTIVE'
+Dec 15 20:15:54 server dotnet[3901]:       ORDER BY c."Id", s."Id", t."Id", t."Id0"
